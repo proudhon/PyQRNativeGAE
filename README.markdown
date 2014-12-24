@@ -25,5 +25,5 @@ Prereqs:
 ----------
 Included in repo so you don't have to manually download it. Just for informational purposes.
 
-- http://code.google.com/p/pyqrnative/ - Lib for generating QRCodes using PIL which is not available on GAE
+- https://github.com/kazuhikoarase/qrcode-generator - QR Code Generator for Python
 - https://github.com/rcarmo/pngcanvas - pure python PNG canvas, very nice one
