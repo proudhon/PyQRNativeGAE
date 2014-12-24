@@ -7,10 +7,10 @@ How to use (example in Django):
 
 Simply just import it and generate QR Code.
 
-    from PyQRNative import QRErrorCorrectLevel
+    from qrcode import ErrorCorrectLevel
     from PyQRNativeGAE import QRCode
 	url = "https://github.com/bernii/PyQRNativeGAE"
-    qr = QRCode(QRCode.get_type_for_string(url), QRErrorCorrectLevel.L)
+    qr = QRCode(QRCode.get_type_for_string(url), ErrorCorrectLevel.L)
     qr.addData(url)
     qr.make()
     return HttpResponse(qr.make_svg(), mimetype="image/svg+xml")
