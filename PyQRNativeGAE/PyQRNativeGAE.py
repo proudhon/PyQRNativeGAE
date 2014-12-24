@@ -2,12 +2,14 @@
 Created on 03-06-2011
 
 @author: berni
-'''
-from PyQRNative import QRCode as QRCodeNormal
-from pngcanvas import PNGCanvas
-from qrcode.PyQRNative import QR8bitByte, QRBitBuffer, QRUtil, \
-    QRErrorCorrectLevel, QRRSBlock
 
+@update in 2014-12-23 by CelioMarcos
+
+'''
+from qrcode import QRCode as QRCodeNormal
+from pngcanvas import PNGCanvas
+from qrcode import QR8BitByte, BitBuffer, QRUtil, RSBlock, QRCode, \
+    ErrorCorrectLevel
 
 class QRCode(QRCodeNormal):
     '''
@@ -28,12 +30,12 @@ class QRCode(QRCodeNormal):
                 if (self.isDark(row, column) ):
                     pos_x = (column + offset) * boxsize
                     pos_y = (row + offset) * boxsize
-                    canvas.filledRectangle(pos_x, pos_y, pos_x + boxsize, pos_y + boxsize)
+                    canvas.filled_rectangle(pos_x, pos_y, pos_x + boxsize, pos_y + boxsize)
         return canvas.dump()
 
 
     @staticmethod
-    def get_type_for_string(string):
+    def get_type_for_string(string, err_lvl):
         '''
         Get QRCode type (complexity) for a string
         @param string:
@@ -41,15 +43,15 @@ class QRCode(QRCodeNormal):
         type_number = 0
         total_data_count = 0
         buff_len = 1000
-        string_bit = QR8bitByte(string)
+        string_bit = QR8BitByte(string)
         while buff_len > total_data_count * 8:
             type_number += 1
-            buff = QRBitBuffer()
+            buff = BitBuffer()
             buff.put(string_bit.mode, 4)
-            buff.put(string_bit.getLength(), QRUtil.getLengthInBits(string_bit.mode, type_number) )
+            buff.put(string_bit.getLength(), QRUtil.getMaxLength(type_number, string_bit.mode, err_lvl) )
             string_bit.write(buff)
             buff_len = buff.getLengthInBits()
-            rs_blocks = QRRSBlock.getRSBlocks(type_number, QRErrorCorrectLevel.L)
+            rs_blocks = RSBlock.getRSBlocks(type_number, ErrorCorrectLevel.L)
             total_data_count = 0
             for i in range(len(rs_blocks)):
                 total_data_count += rs_blocks[i].dataCount
